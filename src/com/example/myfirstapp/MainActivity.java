@@ -1,34 +1,57 @@
 package com.example.myfirstapp;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
-import android.widget.EditText;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
-	public final static String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
-	
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-    }
+	private TaskAdapter taskAdapter;
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_main, menu);
-        return true;
-    }
-    
-    /** Called when the user clicks the Send button */
-    public void sendMessage(View view) {
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-        EditText editText = (EditText) findViewById(R.id.edit_message);
-        String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
-    }
+	protected static final int ADD_TASK = 100;
+	private Button tbnAddTaskSimple;
+	private ListView lvTasks;
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_main);
+		lvTasks = (ListView) findViewById(R.id.lvTasks);
+		ArrayList<Task> tasksList = new ArrayList<Task>();
+		for (int i = 1; i < 3; i++) {
+			tasksList.add(new Task(
+					"Task long text to see what it does when out of bounds nunber "
+							+ i));
+		}
+		taskAdapter = new TaskAdapter(this, R.layout.list_item, tasksList);
+
+		lvTasks.setAdapter(taskAdapter);
+
+		tbnAddTaskSimple = (Button) findViewById(R.id.btnAddTask);
+		tbnAddTaskSimple.setOnClickListener(new OnClickListener() {
+
+			public void onClick(View v) {
+				Intent intent = new Intent(MainActivity.this,
+						DisplayMessageActivity.class);
+				startActivityForResult(intent, ADD_TASK);
+			}
+		});
+
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (resultCode == RESULT_OK && requestCode == ADD_TASK) {
+			Toast.makeText(this,
+					"Task Added: " + data.getStringExtra("newTask"),
+					Toast.LENGTH_LONG).show();
+		}
+	}
 }
