@@ -19,12 +19,14 @@ public class MainActivity extends Activity {
 	private Button tbnAddTaskSimple;
 	private ListView lvTasks;
 
+	private ArrayList<Task> tasksList;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		lvTasks = (ListView) findViewById(R.id.lvTasks);
-		ArrayList<Task> tasksList = new ArrayList<Task>();
+		tasksList = new ArrayList<Task>();
 		for (int i = 1; i < 3; i++) {
 			tasksList.add(new Task(
 					"Task long text to see what it does when out of bounds nunber "
@@ -49,6 +51,8 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (resultCode == RESULT_OK && requestCode == ADD_TASK) {
+			tasksList.add(new Task(data.getStringExtra("newTask")));
+			taskAdapter.notifyDataSetChanged();
 			Toast.makeText(this,
 					"Task Added: " + data.getStringExtra("newTask"),
 					Toast.LENGTH_LONG).show();

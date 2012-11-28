@@ -37,10 +37,11 @@ public class TaskAdapter extends ArrayAdapter<Task>{
 	    holder.btnDone.setOnClickListener(new OnClickListener() {
 
 		public void onClick(View v) {
-
 		    Toast.makeText(context,
-			    "You Are done with: " + tasks.get(pos).getTitle(),
-			    Toast.LENGTH_LONG).show();
+				    "You Are done with: " + tasks.get(pos).getTitle(),
+				    Toast.LENGTH_LONG).show();
+			tasks.remove(pos);
+			notifyDataSetChanged();
 
 		}
 	    });
