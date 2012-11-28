@@ -34,7 +34,7 @@ public class MainActivity extends Activity {
 
 		lvTasks.setAdapter(taskAdapter);
 
-		tbnAddTaskSimple = (Button) findViewById(R.id.btnAddTask);
+		tbnAddTaskSimple = (Button) findViewById(R.id.btnAddTaskMain);
 		tbnAddTaskSimple.setOnClickListener(new OnClickListener() {
 
 			public void onClick(View v) {
